@@ -1,0 +1,216 @@
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@700;900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    user-select: none;
+}
+
+body {
+    background-color: #0b0c10;
+    color: #ffffff;
+    font-family: 'Cairo', sans-serif;
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    transition: background 0.1s ease;
+}
+
+canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* زر البداية والعداد */
+#start-btn {
+    z-index: 10;
+    padding: 25px 70px;
+    font-size: 2.8rem;
+    font-weight: 900;
+    font-family: 'Cairo', sans-serif;
+    color: #fff;
+    background: linear-gradient(45deg, #ff0055, #ff7700);
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(255, 0, 85, 0.5);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+#start-btn:hover {
+    transform: scale(1.08);
+    box-shadow: 0 15px 40px rgba(255, 0, 85, 0.8);
+}
+
+#start-btn:active {
+    transform: scale(0.95);
+}
+
+/* رقم 18 الكبير */
+#number-18 {
+    position: absolute;
+    z-index: 5;
+    font-size: 14rem;
+    font-weight: 900;
+    background: linear-gradient(to right, #ffd700, #ff007f, #00f2fe);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 40px rgba(255, 215, 0, 0.4);
+    opacity: 0;
+    transform: scale(0.5);
+    transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    pointer-events: none;
+}
+
+#number-18.show {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* البالونات المتطايرة في الخلفية */
+.bg-balloon {
+    position: absolute;
+    bottom: -150px;
+    width: 60px;
+    height: 75px;
+    border-radius: 50%;
+    z-index: 3;
+    animation: floatUp linear forwards;
+    pointer-events: none;
+}
+
+.bg-balloon::after {
+    content: '';
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    width: 2px;
+    height: 30px;
+    background: rgba(255, 255, 255, 0.5);
+}
+
+@keyframes floatUp {
+    to {
+        transform: translateY(-120vh) rotate(15deg);
+    }
+}
+
+/* البالون الأحمر التفاعلي */
+#red-balloon {
+    position: absolute;
+    bottom: -220px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 150px;
+    height: 185px;
+    background: radial-gradient(circle at 30% 30%, #ff4d4d, #b30000);
+    border-radius: 50% 50% 50% 50% / 45% 45% 55% 55%;
+    z-index: 15;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: inset -10px -10px 20px rgba(0,0,0,0.4), 0 15px 35px rgba(255, 0, 0, 0.6);
+    transition: bottom 4s ease-out, transform 0.2s;
+}
+
+#red-balloon:hover {
+    transform: translateX(-50%) scale(1.08);
+}
+
+#red-balloon span {
+    color: white;
+    font-size: 2rem;
+    font-weight: 900;
+    text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+}
+
+#red-balloon::before {
+    content: '';
+    position: absolute;
+    bottom: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 15px solid #b30000;
+}
+
+#red-balloon::after {
+    content: '';
+    position: absolute;
+    bottom: -80px;
+    left: 50%;
+    width: 3px;
+    height: 70px;
+    background: #fff;
+}
+
+/* حاوية الصورة النهائية */
+#photo-container {
+    position: relative;
+    z-index: 8;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transform: scale(0);
+    transition: transform 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+#photo-container.pop-in {
+    transform: scale(1);
+}
+
+#celebration-img {
+    width: 45vw;
+    max-width: 420px;
+    min-width: 260px;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 25px;
+    border: 6px solid #fff;
+    box-shadow: 0 0 40px #ff007f, 0 0 80px #00f2fe;
+    transition: transform 0.08s ease-out, box-shadow 0.08s ease-out;
+}
+
+#birthday-text {
+    margin-top: 20px;
+    font-size: 2.5rem;
+    font-weight: 900;
+    text-align: center;
+    background: linear-gradient(45deg, #ff007f, #ffd700, #00f2fe);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 2px 10px rgba(0,0,0,0.8));
+}
+
+/* القلوب والورود المتطايرة حول الصورة */
+.floating-emoji {
+    position: absolute;
+    font-size: 2rem;
+    z-index: 9;
+    pointer-events: none;
+    animation: floatEmoji 4s ease-in forwards;
+}
+
+@keyframes floatEmoji {
+    0% {
+        opacity: 1;
+        transform: translate(0, 0) scale(0.5) rotate(0deg);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(var(--tx), var(--ty)) scale(1.5) rotate(360deg);
+    }
+}
